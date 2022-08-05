@@ -14,9 +14,12 @@ function onErrorCountries(error) {
 
 function onFinallyCountries() {
     console.log("Termino");
+
 }
 
-app.get('/', function (req, res) {
+app.get('/', function (req, res) {res.send("Hello :D ");});
+
+app.get('/countries', function (req, res) {
     // res.send('Saludos desde express');
     axios.get("https://restcountries.com/v3.1/all")
         .then(onSuccessCountries.bind(res))
