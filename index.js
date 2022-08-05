@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios")
 const app = express();
+const port = process.env.port || 3000;
 
 function onSuccessCountries(response) {
     this.send(response.data);
@@ -23,8 +24,8 @@ app.get('/', function (req, res) {
         .finally(onFinallyCountries.bind(res));
 });
 
-app.listen(8000, () => {
-    console.log("El servidor está inicializado en el puerto 3000");
+app.listen(port, () => {
+    console.log("El servidor está inicializado en el puerto " + port);
 });
 
 // https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/deployment#example_installing_locallibrary_on_heroku
