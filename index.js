@@ -19,7 +19,23 @@ function onFinally() {
 
 function onSuccessCovid(response) {
     console.log("Success");
-    this.send(response.data);
+    var str = "https://quickchart.io/chart?c={type: 'bar', data: {labels:['covid'], datasets: [";
+    var confirmed = 0;
+    var deaths = 0;
+    var recovered = 0;
+    var active = 0;
+    for (let x in response.data) {
+        confirmed += response.data[x].Confirmed;
+        deaths += response.data[x].Deaths;
+        recovered += response.data[x].Recovered;
+        active += response.data[x].Active;
+    }
+    str += `{label: 'Confirmed', data: [${confirmed}]},`;
+    str += `{label: 'Deaths', data: [${deaths}]},`;
+    str += `{label: 'Recovered', data: [${recovered}]},`;
+    str += `{label: 'Active', data: [${active}]},`;
+    str += "]}}";
+    this.send(str);
 }
 
 app.get('/', function (req, res) {res.send("Hello :D ");});
@@ -33,7 +49,7 @@ app.get('/countries', function (req, res) {
 });
 
 app.get('/covid', function (req, res) {
-    axios.get(`https://api.covid19api.com/country/${req.query.country}/status/confirmed/live`)
+    axios.get(`https://api.covid19api.com/live/country/${req.query.country}/status/confirmed`)
         .then(onSuccessCovid.bind(res))
         .catch(onError.bind(res))
         .finally(onFinally.bind(res));
