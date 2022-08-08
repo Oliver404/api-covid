@@ -49,7 +49,9 @@ app.get('/countries', function (req, res) {
 });
 
 app.get('/covid', function (req, res) {
-    axios.get(`https://api.covid19api.com/live/country/${req.query.country}/status/confirmed`)
+    let date24hrs = new Date();
+    date24hrs = date24hrs.setDate(date24hrs.getDate() - 1);
+    axios.get(`https://api.covid19api.com/live/country/${req.query.country}/status/confirmed/date/${date24hrs.toISOString()}`)
         .then(onSuccessCovid.bind(res))
         .catch(onError.bind(res))
         .finally(onFinally.bind(res));
